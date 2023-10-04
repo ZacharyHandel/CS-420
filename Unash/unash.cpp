@@ -2,6 +2,9 @@
 
 #include <iostream>
 #include <string>
+#include <cstring>
+#include <sstream>
+#include <vector>
 
 using namespace std;
 
@@ -36,7 +39,25 @@ char** tokenize(string)
     (this is what will be expected by the execvp function.)
 */
 char** tokenize(string line) {
-    //PART 2 HERE
+    //declare vector of c strings and stringstream object
+    stringstream ss(line);
+    string token;
+    vector<string> tokens;
+
+    while(ss >> token) {
+        tokens.push_back(token);
+    }
+
+    char** args = new char*[tokens.size()];
+
+    for (size_t i = 0; i < tokens.size(); i++) {
+        args[i] = new char[tokens[i].length() + 1]; // +1 for null-terminator
+        strcpy(args[i], tokens[i].c_str());
+        args[i][tokens[i].length()] = '\0';
+    }
+    
+    args[tokens.size()] = nullptr;
+    return args;
 }
 
 /*
